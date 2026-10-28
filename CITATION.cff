@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this tool, please cite it and the original articles."
+title: "PTSD risk in relatives of ICU patients: interactive companion"
+version: 1.0.0
+date-released: 2026-11-01
+authors:
+  - family-names: Dupont
+    given-names: Thibault
+    affiliation: "NeuroSpin, CEA Paris-Saclay; Famirea study group, Hôpital Saint-Louis, AP-HP"
+repository-code: "https://github.com/tdupont/ptsd-dashboard"
+url: "https://tdupont.github.io/ptsd-dashboard/"
+keywords: [PTSD, intensive care, family members, machine learning, SHAP, XGBoost]
+references:
+  - type: article
+    title: "Prediction of post-traumatic stress disorder in family members of ICU patients: a machine learning approach"
+    authors:
+      - family-names: Dupont
+        given-names: Thibault
+      - family-names: Kentish-Barnes
+        given-names: Nancy
+      - family-names: Pochard
+        given-names: Frédéric
+      - family-names: Duchesnay
+        given-names: Edouard
+      - family-names: Azoulay
+        given-names: Elie
+    journal: "Intensive Care Medicine"
+    volume: 50
+    start: 114
+    end: 124
+    year: 2024
+    doi: 10.1007/s00134-023-07288-1

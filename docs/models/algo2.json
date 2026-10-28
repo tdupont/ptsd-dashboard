@@ -1,0 +1,319 @@
+{
+ "id": "algo2",
+ "type": "logistic",
+ "target": "PTSD outcome at day 90",
+ "inputs": [
+  {
+   "name": "Patient's age",
+   "kind": "numeric"
+  },
+  {
+   "name": "Death in ICU",
+   "kind": "binary"
+  },
+  {
+   "name": "Relative has children",
+   "kind": "binary"
+  },
+  {
+   "name": "Bereavements (THS item J)",
+   "kind": "numeric"
+  },
+  {
+   "name": "Relative's sex",
+   "kind": "categorical",
+   "levels": [
+    "Female",
+    "Male"
+   ],
+   "reference": "Male"
+  },
+  {
+   "name": "Relative lives alone",
+   "kind": "categorical",
+   "levels": [
+    "No",
+    "Yes"
+   ],
+   "reference": "No"
+  },
+  {
+   "name": "Relationship",
+   "kind": "categorical",
+   "levels": [
+    "Children",
+    "Other",
+    "Parent",
+    "Sibling",
+    "Spouse"
+   ],
+   "reference": null
+  },
+  {
+   "name": "HADS A13 (sudden panic)",
+   "kind": "numeric"
+  },
+  {
+   "name": "HADS D2 (enjoyment)",
+   "kind": "numeric"
+  },
+  {
+   "name": "HADS D4 (laughter)",
+   "kind": "numeric"
+  },
+  {
+   "name": "HADS D12 (looking forward)",
+   "kind": "numeric"
+  },
+  {
+   "name": "PDEQ 4 (unreality)",
+   "kind": "numeric"
+  },
+  {
+   "name": "PDEQ 5 (spectator)",
+   "kind": "numeric"
+  },
+  {
+   "name": "PDEQ 6 (body disconnection)",
+   "kind": "numeric"
+  },
+  {
+   "name": "ISI sleep dissatisfaction",
+   "kind": "numeric"
+  },
+  {
+   "name": "ISI daily functioning",
+   "kind": "numeric"
+  },
+  {
+   "name": "ISI quality of life",
+   "kind": "numeric"
+  },
+  {
+   "name": "At ease expressing opinion",
+   "kind": "binary"
+  },
+  {
+   "name": "At ease expressing feelings",
+   "kind": "binary"
+  },
+  {
+   "name": "Social support",
+   "kind": "numeric"
+  },
+  {
+   "name": "Social exclusion",
+   "kind": "numeric"
+  },
+  {
+   "name": "Financial stress",
+   "kind": "numeric"
+  },
+  {
+   "name": "Physical pain",
+   "kind": "numeric"
+  }
+ ],
+ "binary_coding": {
+  "No": 0,
+  "Yes": 1
+ },
+ "features": [
+  {
+   "name": "Patient's age",
+   "impute_value": 61.85515021459227,
+   "mean": 61.85515021459227,
+   "scale": 14.286366339096183,
+   "coef": -0.03408059359966306
+  },
+  {
+   "name": "Death in ICU",
+   "impute_value": 0.27253218884120173,
+   "mean": 0.27253218884120173,
+   "scale": 0.4452621642208388,
+   "coef": 0.03241348520388232
+  },
+  {
+   "name": "Relative has children",
+   "impute_value": 0.7819548872180451,
+   "mean": 0.7819548872180451,
+   "scale": 0.4126966199436861,
+   "coef": -0.040550393771645175
+  },
+  {
+   "name": "Bereavements (THS item J)",
+   "impute_value": 2.3293736501079914,
+   "mean": 2.3293736501079914,
+   "scale": 2.3906427558665277,
+   "coef": 0.02433815763772803
+  },
+  {
+   "name": "HADS A13 (sudden panic)",
+   "impute_value": 1.0175675675675675,
+   "mean": 1.0175675675675675,
+   "scale": 0.7701315461052487,
+   "coef": 0.057390860920508734
+  },
+  {
+   "name": "HADS D2 (enjoyment)",
+   "impute_value": 1.235054347826087,
+   "mean": 1.235054347826087,
+   "scale": 0.8556399594202843,
+   "coef": 0.058795314362476904
+  },
+  {
+   "name": "HADS D4 (laughter)",
+   "impute_value": 1.043360433604336,
+   "mean": 1.043360433604336,
+   "scale": 0.7851986887536504,
+   "coef": 0.05612546858494694
+  },
+  {
+   "name": "HADS D12 (looking forward)",
+   "impute_value": 1.0732700135685211,
+   "mean": 1.0732700135685211,
+   "scale": 0.7861757680503991,
+   "coef": 0.03608470844179807
+  },
+  {
+   "name": "PDEQ 4 (unreality)",
+   "impute_value": 2.21505376344086,
+   "mean": 2.2150537634408605,
+   "scale": 1.187195363160833,
+   "coef": 0.0313625285584932
+  },
+  {
+   "name": "PDEQ 5 (spectator)",
+   "impute_value": 1.7671601615074024,
+   "mean": 1.7671601615074022,
+   "scale": 1.0078653705166551,
+   "coef": 0.025939512592427216
+  },
+  {
+   "name": "PDEQ 6 (body disconnection)",
+   "impute_value": 1.3930013458950201,
+   "mean": 1.39300134589502,
+   "scale": 0.7815218502121811,
+   "coef": 0.057467699732812474
+  },
+  {
+   "name": "ISI sleep dissatisfaction",
+   "impute_value": 2.255720053835801,
+   "mean": 2.255720053835801,
+   "scale": 0.9273000575596942,
+   "coef": 0.052404995578225935
+  },
+  {
+   "name": "ISI daily functioning",
+   "impute_value": 1.5587044534412955,
+   "mean": 1.5587044534412955,
+   "scale": 1.0099804295661126,
+   "coef": 0.06671217103508521
+  },
+  {
+   "name": "ISI quality of life",
+   "impute_value": 1.2267206477732793,
+   "mean": 1.2267206477732795,
+   "scale": 0.9650051319517574,
+   "coef": 0.07023260530410991
+  },
+  {
+   "name": "At ease expressing opinion",
+   "impute_value": 0.8980716253443526,
+   "mean": 0.8980716253443526,
+   "scale": 0.26703205083923914,
+   "coef": -0.0203780427098102
+  },
+  {
+   "name": "At ease expressing feelings",
+   "impute_value": 0.8791208791208791,
+   "mean": 0.8791208791208792,
+   "scale": 0.28810956532841997,
+   "coef": -0.022252442623988764
+  },
+  {
+   "name": "Social support",
+   "impute_value": 5.782561894510226,
+   "mean": 5.782561894510227,
+   "scale": 1.5209825371857135,
+   "coef": -0.06472714090577729
+  },
+  {
+   "name": "Social exclusion",
+   "impute_value": 6.582795698924731,
+   "mean": 6.582795698924731,
+   "scale": 1.2256752239023103,
+   "coef": -0.06256777353526559
+  },
+  {
+   "name": "Financial stress",
+   "impute_value": 5.073196986006459,
+   "mean": 5.073196986006458,
+   "scale": 2.065198710407146,
+   "coef": -0.057526945296593024
+  },
+  {
+   "name": "Physical pain",
+   "impute_value": 3.417653390742734,
+   "mean": 3.4176533907427338,
+   "scale": 2.8097680788763983,
+   "coef": 0.06015940826772968
+  },
+  {
+   "name": "Relative's sex_Female",
+   "impute_value": 0.6899141630901288,
+   "mean": 0.6899141630901288,
+   "scale": 0.46252849713047517,
+   "coef": 0.059000326800786165
+  },
+  {
+   "name": "Relative lives alone_Yes",
+   "impute_value": 0.2607296137339056,
+   "mean": 0.2607296137339056,
+   "scale": 0.43903266650224787,
+   "coef": 0.0569437050499263
+  },
+  {
+   "name": "Relationship_Children",
+   "impute_value": 0.34334763948497854,
+   "mean": 0.34334763948497854,
+   "scale": 0.4748263239807496,
+   "coef": 0.011535189880871315
+  },
+  {
+   "name": "Relationship_Other",
+   "impute_value": 0.04935622317596566,
+   "mean": 0.04935622317596566,
+   "scale": 0.21661067935300407,
+   "coef": -0.0012940614479623103
+  },
+  {
+   "name": "Relationship_Parent",
+   "impute_value": 0.07188841201716738,
+   "mean": 0.07188841201716738,
+   "scale": 0.25830305502416606,
+   "coef": 0.018135602065351378
+  },
+  {
+   "name": "Relationship_Sibling",
+   "impute_value": 0.07725321888412018,
+   "mean": 0.07725321888412018,
+   "scale": 0.2669928071243912,
+   "coef": 0.015407588438967433
+  },
+  {
+   "name": "Relationship_Spouse",
+   "impute_value": 0.4581545064377682,
+   "mean": 0.4581545064377682,
+   "scale": 0.4982458777235726,
+   "coef": -0.02808874415308459
+  }
+ ],
+ "intercept": 0.0,
+ "calibration": {
+  "method": "platt",
+  "a": 1.3799605074980692,
+  "b": -2.3579234376632057
+ },
+ "threshold": 0.084
+}

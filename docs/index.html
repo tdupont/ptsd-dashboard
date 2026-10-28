@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PTSD risk in ICU relatives</title>
+<meta name="description" content="Interactive companion to the PhD thesis of Thibault Dupont: two models predicting post-traumatic stress disorder in relatives of ICU patients, with performance and SHAP explanations.">
+<meta name="color-scheme" content="light">
+<script>
+  // theme: light by default; the visitor's choice (toggle) is remembered on this device
+  try { if (localStorage.getItem("ptsd-icu-theme") === "dark") document.documentElement.dataset.theme = "dark"; } catch (e) {}
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231d2733'/%3E%3Crect x='7' y='17' width='4' height='8' rx='1' fill='%232874b2'/%3E%3Crect x='14' y='11' width='4' height='14' rx='1' fill='%23ffffff'/%3E%3Crect x='21' y='6' width='4' height='19' rx='1' fill='%23b83a68'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/libre-franklin-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/literata-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+<script src="vendor/d3.min.js" defer></script>
+<script type="module" src="js/app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead wrap">
+  <div class="masthead-top">
+    <nav class="links" aria-label="Resources">
+      <a id="link-paper" href="https://doi.org/10.1007/s00134-023-07288-1" data-i18n="paper">Paper</a>
+      <!-- TODO: set the thesis link (e.g. theses.fr / HAL) and the repository URL; links left as "#" are hidden -->
+      <a id="link-thesis" href="#" data-i18n="thesis">Thesis</a>
+      <a id="link-code" href="https://github.com/tdupont/ptsd-dashboard" data-i18n="code">Code</a>
+    </nav>
+    <div class="masthead-right">
+      <button class="notice" id="notice" type="button"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="7.25" y="6.8" width="1.5" height="5" rx=".7" fill="currentColor"/><circle cx="8" cy="4.6" r=".95" fill="currentColor"/></svg><span data-i18n="research">Research use only</span></button>
+      <button class="lang theme-toggle" id="theme" type="button" aria-pressed="false">
+        <svg class="i-moon" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 10.2A6 6 0 0 1 5.8 2.5a6 6 0 1 0 7.7 7.7Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        <svg class="i-sun" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6 13 13M3 13l1.4-1.4M11.6 4.4 13 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span id="theme-label">Dark</span>
+      </button>
+      <button class="lang" id="lang" type="button" lang="fr">Français</button>
+    </div>
+  </div>
+  <h1 data-i18n="title">Predicting PTSD in relatives of ICU patients</h1>
+  <p class="lede" data-i18n="lede"></p>
+</header>
+
+<section class="wrap chooser-wrap" aria-labelledby="chooser-label">
+  <h2 id="chooser-label" class="visually-hidden" data-i18n="chooseModel">Model</h2>
+  <div class="chooser" role="radiogroup" aria-labelledby="chooser-label" id="chooser"></div>
+  <div class="reference" id="reference" aria-live="polite"></div>
+</section>
+
+<div class="wrap tabs-wrap">
+  <div class="tabs" role="tablist" id="tabs">
+    <button role="tab" id="tab-predict" aria-controls="panel-predict" data-tab="predict" data-i18n="tabPredict">Predict</button>
+    <button role="tab" id="tab-performance" aria-controls="panel-performance" data-tab="performance" data-i18n="tabPerformance">Performance</button>
+    <button role="tab" id="tab-model" aria-controls="panel-model" data-tab="model" data-i18n="tabModel">About the model</button>
+  </div>
+</div>
+
+<main id="main" class="wrap">
+  <!-- PREDICT -->
+  <section role="tabpanel" id="panel-predict" aria-labelledby="tab-predict" class="panel">
+    <div class="predict-grid">
+      <form class="sheet" id="form" autocomplete="off" novalidate>
+        <div class="sheet-head">
+          <h2 data-i18n="formTitle">Relative's profile</h2>
+          <p class="hint" data-i18n="formHint"></p>
+          <div class="examples">
+            <span class="examples-label" data-i18n="examples">Synthetic examples</span>
+            <div class="examples-btns">
+              <button type="button" class="chip" data-example="low" data-i18n="exLow">Lower risk</button>
+              <button type="button" class="chip" data-example="typical" data-i18n="exMid">Typical</button>
+              <button type="button" class="chip" data-example="high" data-i18n="exHigh">Higher risk</button>
+              <button type="button" class="chip ghost" data-example="clear" data-i18n="clear">Clear all</button>
+            </div>
+          </div>
+          <p class="provided" id="provided" aria-live="polite"></p>
+        </div>
+        <div id="fields"></div>
+      </form>
+
+      <div class="results">
+        <section class="result-main" id="result-main" aria-labelledby="prob-title">
+          <h2 id="prob-title" class="eyebrowless" data-i18n="probTitle">Predicted probability of PTSD at day 90</h2>
+          <div class="readout">
+            <output class="prob" id="prob" aria-live="polite">–</output>
+            <p class="status" id="status"></p>
+          </div>
+          <p class="zone-line" id="zone-line"></p>
+          <div class="placeholder-note" id="ph-predict" hidden></div>
+          <div class="chart" id="chart-risk"></div>
+          <ul class="zone-legend" id="zone-legend"></ul>
+          <p class="caption" data-i18n="distCaption"></p>
+          <p class="similar" id="similar"></p>
+        </section>
+
+        <section class="block" aria-labelledby="why-title">
+          <div class="block-head">
+            <h2 id="why-title" data-i18n="whyTitle">Why this prediction</h2>
+            <div class="dl" data-fig="waterfall"></div>
+          </div>
+          <p class="caption" id="why-caption"></p>
+          <div class="chart" id="chart-why"></div>
+        </section>
+
+        <section class="block" aria-labelledby="whatif-title">
+          <div class="block-head">
+            <h2 id="whatif-title" data-i18n="whatIfTitle">What if one variable changed?</h2>
+            <div class="dl" data-fig="whatif"></div>
+          </div>
+          <p class="caption" data-i18n="whatIfCaption"></p>
+          <label class="select-row"><span data-i18n="vary">Variable</span>
+            <select id="whatif-var"></select>
+          </label>
+          <div class="chart" id="chart-whatif"></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERFORMANCE -->
+  <section role="tabpanel" id="panel-performance" aria-labelledby="tab-performance" class="panel" hidden>
+    <div class="placeholder-note" id="ph-perf" hidden></div>
+    <div class="model-switch" id="model-switch" hidden>
+      <span class="control-label" data-i18n="modelShown">Model</span>
+      <div class="seg" role="radiogroup" id="model-seg"></div>
+      <label class="overlay"><input type="checkbox" id="overlay" checked> <span data-i18n="overlay">Show both models on the curves</span></label>
+      <p class="hint" id="model-note"></p>
+    </div>
+    <div class="controls sheet">
+      <div class="control">
+        <label for="thr" class="control-label" data-i18n="perfThreshold">Decision threshold</label>
+        <div class="slider-row">
+          <input type="range" id="thr" min="0.005" max="0.9" step="0.005">
+          <output id="thr-out" for="thr"></output>
+        </div>
+        <div class="presets" id="presets"></div>
+        <p class="hint" data-i18n="perfThresholdHint"></p>
+      </div>
+      <div class="control">
+        <label for="prev" class="control-label" data-i18n="prevTitle">Prevalence in your setting</label>
+        <div class="slider-row">
+          <input type="range" id="prev" min="0.02" max="0.6" step="0.01">
+          <output id="prev-out" for="prev"></output>
+        </div>
+        <p class="hint" id="prev-hint"></p>
+        <div class="compare" id="compare"></div>
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <dl class="metrics" id="metrics"></dl>
+      <figure class="icons">
+        <figcaption class="control-label" data-i18n="per100">Out of 100 relatives</figcaption>
+        <div id="icon-array"></div>
+        <ul class="icon-legend" id="icon-legend"></ul>
+      </figure>
+    </div>
+
+    <section class="zones block" aria-labelledby="zones-title">
+      <div class="block-head"><h2 id="zones-title" data-i18n="zonesTitle">Risk zones</h2><div class="dl" data-fig="zones"></div></div>
+      <p class="caption" data-i18n="zonesHint"></p>
+      <div class="zone-controls">
+        <div class="control"><label for="zlo" class="control-label" data-i18n="ruleOut"></label>
+          <div class="slider-row"><input type="range" id="zlo" min="0.005" max="0.9" step="0.005"><output id="zlo-out" for="zlo"></output></div></div>
+        <div class="control"><label for="zhi" class="control-label" data-i18n="ruleIn"></label>
+          <div class="slider-row"><input type="range" id="zhi" min="0.005" max="0.9" step="0.005"><output id="zhi-out" for="zhi"></output></div></div>
+      </div>
+      <div class="chart" id="chart-zones"></div>
+      <div class="table-wrap"><table class="vars zone-table" id="zone-table"></table></div>
+    </section>
+
+    <div class="figs">
+      <figure class="fig"><div class="block-head"><h3 data-i18n="figROC">ROC curve</h3><div class="dl" data-fig="roc"></div></div>
+        <div class="chart" id="chart-roc"></div><figcaption class="caption" id="cap-roc"></figcaption></figure>
+      <figure class="fig"><div class="block-head"><h3 data-i18n="figPR">Precision–recall</h3><div class="dl" data-fig="pr"></div></div>
+        <div class="chart" id="chart-pr"></div><figcaption class="caption" data-i18n="capPR"></figcaption></figure>
+      <figure class="fig"><div class="block-head"><h3 data-i18n="figCal">Calibration</h3><div class="dl" data-fig="calibration"></div></div>
+        <div class="chart" id="chart-cal"></div><figcaption class="caption" id="cap-cal"></figcaption></figure>
+      <figure class="fig"><div class="block-head"><h3 data-i18n="figDCA">Decision curve</h3><div class="dl" data-fig="dca"></div></div>
+        <div class="chart" id="chart-dca"></div><figcaption class="caption" data-i18n="capDCA"></figcaption></figure>
+      <figure class="fig"><div class="block-head"><h3 data-i18n="figThr">Sensitivity and specificity by threshold</h3><div class="dl" data-fig="threshold"></div></div>
+        <div class="chart" id="chart-thr"></div><figcaption class="caption" data-i18n="capThr"></figcaption></figure>
+      <figure class="fig"><div class="block-head"><h3 data-i18n="figGain">Workload and cases detected</h3><div class="dl" data-fig="gain"></div></div>
+        <div class="chart" id="chart-gain"></div><figcaption class="caption" data-i18n="capGain"></figcaption></figure>
+    </div>
+    <p class="validation" id="validation"></p>
+  </section>
+
+  <!-- MODEL -->
+  <section role="tabpanel" id="panel-model" aria-labelledby="tab-model" class="panel" hidden>
+    <div class="about" id="about"></div>
+  </section>
+</main>
+
+<div class="dock" id="dock" hidden aria-hidden="true">
+  <div class="wrap dock-inner"><span class="dock-label" data-i18n="thisRelative">This relative</span><strong id="dock-prob">–</strong><span id="dock-status"></span></div>
+</div>
+
+<dialog class="disclaimer" id="disclaimer" aria-labelledby="dlg-title">
+  <form method="dialog">
+    <h2 id="dlg-title" data-i18n="dlgTitle">Research use only</h2>
+    <p data-i18n="dlgIntro"></p>
+    <ul id="dlg-items"></ul>
+    <label class="dlg-check"><input type="checkbox" id="dlg-ok"> <span data-i18n="dlgCheck"></span></label>
+    <div class="dlg-actions">
+      <button type="button" class="lang" id="dlg-lang" lang="fr">Français</button>
+      <button type="submit" class="btn" id="dlg-btn" disabled data-i18n="dlgBtn">Continue</button>
+    </div>
+  </form>
+</dialog>
+
+<footer class="wrap footer">
+  <p data-i18n="disclaimer">Research tool. Not a medical device and not validated for clinical decision-making.</p>
+  <p class="small">Thibault Dupont, NeuroSpin (CEA Paris-Saclay) and Famirea study group, Hôpital Saint-Louis (AP-HP). <span data-i18n="privacyText"></span></p>
+</footer>
+<noscript><p class="wrap">This page needs JavaScript to run the models in your browser.</p></noscript>
+</body>
+</html>

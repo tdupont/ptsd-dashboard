@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+dashboard_private/
+*.pkl
+.DS_Store
+predictions.csv
+
+# notebooks run on the real data: keep local (outputs, paths, tokens)
+notebooks/
