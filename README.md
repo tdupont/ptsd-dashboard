@@ -14,12 +14,12 @@ Visitors choose a model, enter a relative's profile and get the predicted probab
 A **Performance** tab has:
 - a switch between the published model and the TabPFN comparator;
 - a threshold slider with sensitivity, specificity, PPV and NPV (95 % CIs), an icon array and a prevalence adjustment;
-- AIPAL-style **risk zones** (low / intermediate / high, adjustable rule-out and rule-in cutoffs);
-- six figures: ROC, precision–recall, calibration, decision curve, metrics by threshold, and workload vs cases detected.
+- **risk zones** (low / intermediate / high, adjustable rule-out and rule-in cutoffs);
+- six figures: ROC, precision–recall, calibration, decision curve analysis, metrics by threshold, and workload vs cases detected.
 
 The **About the model** tab shows global importance, binned SHAP dependence profiles, the coefficients of the logistic regression, and the variables. A research-use disclaimer must be accepted on the first visit. Every figure downloads as SVG (font embedded), 300-dpi PNG or CSV.
 
-TabPFN appears in the Performance tab only. It cannot predict in the browser, because it needs the training data at prediction time.
+TabPFN appears in the Performance tab only. 
 
 **Everything runs in the browser.** No server, no tracking, and the entered values are never transmitted.
 
