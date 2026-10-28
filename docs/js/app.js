@@ -208,7 +208,7 @@ function renderAll() {
   $("#lang").textContent = T.langSwitch;
   $("#lang").lang = state.lang === "en" ? "fr" : "en";
   renderThemeButton();
-  document.title = state.lang === "fr" ? "Risque de TSPT chez les proches en réanimation" : "PTSD risk in ICU relatives";
+  document.title = t().title;
   M.algo1.labels = labelMap("algo1"); M.algo2.labels = labelMap("algo2");
   renderChooser();
   renderReference();
