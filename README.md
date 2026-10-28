@@ -43,14 +43,6 @@ tools/
   make_examples.mjs       picks synthetic example profiles
 ```
 
-## 1. Replace the placeholder performance curves (required before publication)
-
-The two `docs/models/*_performance.json` files currently contain **simulated** curves. The site shows a warning banner while `"placeholder": true`. To replace them with the real aggregated results:
-
-1. **Algo 1:** open `export_modele.ipynb`, run it up to section 1d and the threshold cell (with `REFIT_ON_ALL = False`). Then paste and run the cells of `tools/notebook_cells/algo1_cells.py`. Set `DASH` to this repository's folder first.
-   - *TabPFN comparator:* the TabPFN cell runs `tools/tabpfn_run.py` in a separate Python process. For algo 1, `TABPFN_PYTHON` points to an environment with Python ≥ 3.10 and `tabpfn`. Set `RERUN_TABPFN = True` to recompute, or `RUN_TABPFN = False` to skip it. In Jupyter itself, TabPFN crashes or hangs on macOS, because scikit-learn and PyTorch load clashing OpenMP libraries. The licence key goes in `~/.cache/tabpfn/auth_token`.
-2. **Algo 2:** run `2-algo2-export-train.ipynb` to the end, then paste and run `tools/notebook_cells/algo2_cells.py`. The TabPFN cell is optional and runs in the same environment.
-
 Only aggregated quantities are written:
 - ROC points;
 - metrics on a 0.005 threshold grid;
@@ -95,15 +87,9 @@ Opening `index.html` directly from disk does not work, because browsers block `f
 4. In `docs/index.html`, set the **Thesis** and **Code** links. Links left as `#` are hidden.
 
 ### Deep links (for the paper and the thesis)
-
 The URL keeps the model, tab and language, so you can link directly to a view:
-
 - `…/ptsd-dashboard/#algo=algo2&tab=predict&lang=fr`: algorithm 2, French, prediction.
 - `…/ptsd-dashboard/#algo=algo1&tab=performance&lang=en`: algorithm 1, performance.
-
-## 5. Get a DOI (recommended for the thesis)
-
-A DOI keeps the reference valid even if the URL changes.
 
 1. Log in to [zenodo.org](https://zenodo.org) with GitHub. Under **Account → GitHub**, switch the repository on.
 2. On GitHub, create a release (e.g. `v1.0.0`). Zenodo archives it and mints a DOI.
@@ -111,14 +97,5 @@ A DOI keeps the reference valid even if the URL changes.
 
 `CITATION.cff` is read by both GitHub and Zenodo. Update it before the release.
 
-## Before going public: checklist
-
-- [ ] Replace the placeholder performance files (section 1).
-- [ ] Algo 2: confirm in the eCRF the direction of `Social support`, `Social exclusion` and `Financial stress`. The form shows the anchors from the data dictionary (`TODO(author)` in `docs/js/vars.js`).
-- [ ] Algo 1: `data_dictionary.csv` of the export says the outcome is "HADS". The paper uses IES (cut-off 24) / IES-R (cut-off 26), which is what the site states.
-- [ ] Algo 1 cohort size on the site (2,710 relatives with a day-90 outcome, 2,168 train / 542 test) comes from the export notebook. The paper reports 2,374; adjust the wording in `docs/js/i18n.js` if needed.
-- [ ] Citation of the algo 2 paper once accepted (`ABOUT.algo2.cite` in `docs/js/i18n.js`).
-- [ ] Thesis and code links (`docs/index.html`).
-- [ ] Choose a licence for the code (e.g. MIT) and for the model files.
 
 Research tool. Not a medical device and not validated for clinical decision-making.
