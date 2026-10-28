@@ -112,16 +112,17 @@ export const VARIABLES = {
       label: { en: "Sleep problems interfere with daily functioning", fr: "Retentissement sur le fonctionnement quotidien" }, short: { en: "ISI daily functioning", fr: "ISI fonctionnement" } },
     { name: "ISI quality of life", group: "isi", widget: "scale", options: ISI_IMPACT,
       label: { en: "Sleep problems impair quality of life", fr: "Détérioration de la qualité de vie" }, short: { en: "ISI quality of life", fr: "ISI qualité de vie" } },
-    // TODO(author): confirm the direction of the three 0-7 scales in the eCRF before publication.
+    // Directions checked against the eCRF: exclusion (0 = strong exclusion, 7 = none) and financial stress
+    // (0 = very high stress, 7 = none). TODO(author): confirm "Social support" (0 = very isolated, 7 = very well supported).
     { name: "Social support", group: "context", widget: "scale", options: scale([[0, "", ""], [1, "", ""], [2, "", ""], [3, "", ""], [4, "", ""], [5, "", ""], [6, "", ""], [7, "", ""]]),
       ends: { en: ["Very isolated", "Very well supported"], fr: ["Très isolé", "Très entouré"] },
       label: { en: "Support from family and friends", fr: "Soutien de l'entourage" }, short: { en: "Social support", fr: "Soutien entourage" } },
     { name: "Social exclusion", group: "context", widget: "scale", options: scale([[0, "", ""], [1, "", ""], [2, "", ""], [3, "", ""], [4, "", ""], [5, "", ""], [6, "", ""], [7, "", ""]]),
-      ends: { en: ["Very excluded", "Not excluded at all"], fr: ["Très exclu", "Pas du tout exclu"] },
+      ends: { en: ["Strong social exclusion", "No social exclusion"], fr: ["Forte exclusion sociale", "Aucune exclusion sociale"] },
       label: { en: "Feeling of social exclusion", fr: "Sentiment d'exclusion sociale" }, short: { en: "Social exclusion", fr: "Exclusion sociale" } },
     { name: "Financial stress", group: "context", widget: "scale", options: scale([[0, "", ""], [1, "", ""], [2, "", ""], [3, "", ""], [4, "", ""], [5, "", ""], [6, "", ""], [7, "", ""]]),
-      ends: { en: ["High financial stress", "No financial stress"], fr: ["Stress financier élevé", "Aucun stress financier"] },
-      label: { en: "Financial situation", fr: "Situation financière" }, short: { en: "Financial stress", fr: "Stress financier" } },
+      ends: { en: ["Very high stress", "No stress"], fr: ["Stress très important", "Aucun stress"] },
+      label: { en: "Perceived financial stress", fr: "Stress financier ressenti" }, short: { en: "Financial stress", fr: "Stress financier" } },
     { name: "Physical pain", group: "context", widget: "scale", options: scale([[0, "", ""], [1, "", ""], [2, "", ""], [3, "", ""], [4, "", ""], [5, "", ""], [6, "", ""], [7, "", ""], [8, "", ""], [9, "", ""], [10, "", ""]]),
       ends: { en: ["No pain", "Worst pain"], fr: ["Aucune douleur", "Douleur maximale"] },
       label: { en: "Relative's physical pain", fr: "Douleurs physiques du proche" }, short: { en: "Physical pain", fr: "Douleurs physiques" } },
