@@ -448,16 +448,23 @@ export function dca(el, { perf, comp, threshold }, o) {
   const ymin = -0.02 - ymax * 0.06;
   const x = d3.scaleLinear([0, xmax], [0, w]), y = d3.scaleLinear([ymin, ymax], [h, 0]);
   axes(g, { x, y, w, h, theme, xLabel: t.thresholdProb, yLabel: t.netBenefit, xFormat: (d) => `${Math.round(d * 100)} %`, yFormat: f2 });
-  g.append("line").attr("x1", 0).attr("x2", w).attr("y1", y(0)).attr("y2", y(0)).attr("stroke", theme.ink3).attr("stroke-width", 1.5);
+  // "Flag no one" is the zero line (raspberry); "Flag everyone" is the dashed blue curve; each is labelled on the plot
+  g.append("line").attr("x1", 0).attr("x2", w).attr("y1", y(0)).attr("y2", y(0)).attr("stroke", theme.up).attr("stroke-width", 2);
   const ln = (key) => d3.line().defined((d) => d[key] >= ymin).x((d) => x(d.t)).y((d) => y(d[key]));
-  g.append("path").datum(D).attr("fill", "none").attr("stroke", theme.spec).attr("stroke-width", 1.5).attr("d", ln("all"));
+  g.append("path").datum(D).attr("fill", "none").attr("stroke", theme.down).attr("stroke-width", 2).attr("stroke-dasharray", "7 4").attr("d", ln("all"));
   if (comp) g.append("path").datum(C).attr("fill", "none").attr("stroke", theme.comp).attr("stroke-width", 2).attr("d", ln("model"));
   g.append("path").datum(D).attr("fill", "none").attr("stroke", theme.model).attr("stroke-width", 2).attr("d", ln("model"));
-  if (threshold <= xmax) g.append("line").attr("x1", x(threshold)).attr("x2", x(threshold)).attr("y1", 0).attr("y2", h).attr("stroke", theme.ink3);
+  const halo = (sel) => sel.attr("stroke", theme.surface).attr("stroke-width", 3).attr("paint-order", "stroke").attr("stroke-linejoin", "round");
+  if (threshold <= xmax) {
+    g.append("line").attr("x1", x(threshold)).attr("x2", x(threshold)).attr("y1", 0).attr("y2", h).attr("stroke", theme.ink2).attr("stroke-width", 1.2).attr("stroke-dasharray", "3 3");
+    const lab = `${t.threshold} ${pct(threshold, 1)}`, left = x(threshold) + 6 + textWidth(lab, 11.5) > w;
+    halo(g.append("text").attr("x", x(threshold) + (left ? -6 : 6)).attr("y", 11).attr("text-anchor", left ? "end" : "start").attr("fill", theme.ink2).attr("font-size", 11.5).text(lab));
+  }
   const items = [{ kind: "line", color: theme.model, label: o.mainLabel }];
   if (comp) items.push({ kind: "line", color: theme.comp, label: "TabPFN" });
-  items.push({ kind: "line", color: theme.spec, label: t.treatAll });
-  g.append("text").attr("x", 6).attr("y", y(0) + 16).attr("fill", theme.ink2).attr("font-size", 11.5).text(t.treatNone);
+  halo(g.append("text").attr("x", w - 4).attr("y", y(0) + 15).attr("text-anchor", "end").attr("fill", theme.up).attr("font-size", 11.5).attr("font-weight", 600).text(t.treatNone));
+  const vis = D.filter((d) => d.all >= ymin), end = vis[vis.length - 1];
+  if (end) halo(g.append("text").attr("x", x(end.t) + (end.t > xmax * 0.8 ? -8 : 8)).attr("y", y(end.all) + 4).attr("text-anchor", end.t > xmax * 0.8 ? "end" : "start").attr("fill", theme.down).attr("font-size", 11.5).attr("font-weight", 600).text(t.treatAll));
   legend(g, items, theme, 0, -16);
   const hov = g.append("line").attr("y1", 0).attr("y2", h).attr("stroke", theme.ink2).style("display", "none");
   g.append("rect").attr("width", w).attr("height", h).attr("fill", "transparent")
