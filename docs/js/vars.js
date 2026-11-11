@@ -112,8 +112,11 @@ export const VARIABLES = {
       label: { en: "Sleep problems interfere with daily functioning", fr: "Retentissement sur le fonctionnement quotidien" }, short: { en: "ISI daily functioning", fr: "ISI fonctionnement" } },
     { name: "ISI quality of life", group: "isi", widget: "scale", options: ISI_IMPACT,
       label: { en: "Sleep problems impair quality of life", fr: "Détérioration de la qualité de vie" }, short: { en: "ISI quality of life", fr: "ISI qualité de vie" } },
-    // Directions checked against the eCRF: exclusion (0 = strong exclusion, 7 = none) and financial stress
-    // (0 = very high stress, 7 = none). TODO(author): confirm "Social support" (0 = very isolated, 7 = very well supported).
+    // Scale directions confirmed against the eCRF (FAME source variables):
+    //   Social support   = ENTOURAGE          0 = isolated, lack of support ... 7 = very well supported
+    //   Social exclusion = EXCLUSION_SOCIALE  0 = strong exclusion ... 7 = no exclusion
+    //   Financial stress                      0 = very high stress ... 7 = no stress
+    // Higher values are protective for all three (negative coefficients in algo2.json).
     { name: "Social support", group: "context", widget: "scale", options: scale([[0, "", ""], [1, "", ""], [2, "", ""], [3, "", ""], [4, "", ""], [5, "", ""], [6, "", ""], [7, "", ""]]),
       ends: { en: ["Very isolated", "Very well supported"], fr: ["Très isolé", "Très entouré"] },
       label: { en: "Support from family and friends", fr: "Soutien de l'entourage" }, short: { en: "Social support", fr: "Soutien entourage" } },

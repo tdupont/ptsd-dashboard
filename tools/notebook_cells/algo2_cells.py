@@ -9,8 +9,8 @@
 import sys
 from pathlib import Path
 
-DASH = Path("/Users/tdupont/Desktop/2022_PhD/ptsd-dashboard")   # <-- adapt: folder of the dashboard repo
-assert (DASH / "tools" / "performance.py").exists(), f"Unzip ptsd-dashboard.zip so that {DASH} exists, or adapt DASH"
+DASH = Path("~/ptsd-dashboard").expanduser()   # <-- adapt: folder of the dashboard repo
+assert (DASH / "tools" / "performance.py").exists(), f"Clone the repository to {DASH}, or adapt DASH"
 sys.path.insert(0, str(DASH / "tools"))
 import importlib
 import performance

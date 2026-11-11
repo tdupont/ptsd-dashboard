@@ -70,7 +70,7 @@ spec2 = {"id": "algo2", "type": "logistic", **{k: m2[k] for k in
 
 sys.path.insert(0, str(a2))
 sys.dont_write_bytecode = True
-from predict import predict_proba  # noqa: E402  (the user's own predict.py, numpy only)
+from predict import predict_proba  # noqa: E402  (predict.py shipped with the export folder, numpy only)
 
 t2 = pd.read_csv(a2 / "test.csv")
 names2 = [d["name"] for d in m2["inputs"]]
